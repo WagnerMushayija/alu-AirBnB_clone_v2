@@ -230,11 +230,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        count = 0
-        for key in storage.all().keys():
-            if args == key.split('.')[0]:
-                count += 1
-        print(count)  # Only print the count
+        count = sum(1 for key in storage.all() if key.split('.')[0] == args)
+        print(count)
 
     def help_count(self):
         """ """

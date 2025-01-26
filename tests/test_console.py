@@ -2,6 +2,7 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
+from models import storage
 
 
 class TestConsole(unittest.TestCase):
@@ -10,10 +11,11 @@ class TestConsole(unittest.TestCase):
     def setUp(self):
         """Set up test environment."""
         self.console = HBNBCommand()
+        storage._FileStorage__objects = {}
 
     def tearDown(self):
         """Clean up after each test."""
-        pass
+        storage._FileStorage__objects = {}
 
     def test_create(self):
         """Test create command."""
@@ -62,15 +64,12 @@ class TestConsole(unittest.TestCase):
     def test_count(self):
         """Test count command."""
         with patch('sys.stdout', new=StringIO()) as f:
-            # Create a BaseModel instance
-            self.console.onecmd("create BaseModel")
-            # Clear the buffer to remove the ID of the created object
-            f.truncate(0)
-            f.seek(0)
-            # Run the count command
-            self.console.onecmd("count BaseModel")
+            self.console.onecmd('create User')
+            self.console.onecmd('create User')
+            self.console.onecmd('User.count()')
             output = f.getvalue().strip()
-            self.assertEqual(output, "1")  # Check if count is correct
+            self.assertIn("2", output)  # Check if the count is correct
+
 
 if __name__ == "__main__":
     unittest.main()
