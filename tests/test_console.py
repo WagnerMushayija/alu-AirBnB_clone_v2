@@ -41,7 +41,7 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd(f"destroy BaseModel {model_id}")
             self.console.onecmd(f"show BaseModel {model_id}")
             output = f.getvalue().strip()
-            self.assertIn("** no instance found **", output)  # Check if instance is deleted
+            self.assertIn("** no instance found **", output)
 
     def test_all(self):
         """Test all command."""
