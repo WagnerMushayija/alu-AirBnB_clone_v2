@@ -62,11 +62,15 @@ class TestConsole(unittest.TestCase):
     def test_count(self):
         """Test count command."""
         with patch('sys.stdout', new=StringIO()) as f:
+            # Create a BaseModel instance
             self.console.onecmd("create BaseModel")
+            # Clear the buffer to remove the ID of the created object
+            f.truncate(0)
+            f.seek(0)
+            # Run the count command
             self.console.onecmd("count BaseModel")
             output = f.getvalue().strip()
             self.assertEqual(output, "1")  # Check if count is correct
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -222,11 +222,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
+        if not args:
+            print("** class name missing **")
+            return
+
+        if args not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
         count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
+        for key in storage.all().keys():
+            if args == key.split('.')[0]:
                 count += 1
-        print(count)
+        print(count)  # Only print the count
 
     def help_count(self):
         """ """
@@ -283,7 +291,7 @@ class HBNBCommand(cmd.Cmd):
             if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
